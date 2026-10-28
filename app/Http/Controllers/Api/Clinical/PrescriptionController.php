@@ -49,7 +49,6 @@ class PrescriptionController extends Controller
         $prescriptionRecord = Prescription::query()
             ->with([
                 'doctor',
-                'items',
                 'consultation.clinic',
                 'consultation.patient',
             ])

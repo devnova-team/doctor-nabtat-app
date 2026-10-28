@@ -12,6 +12,8 @@ class EnsureDoctorRole
     {
         if ($request->user()?->role !== 'doctor') {
             return response()->json([
+                'success' => false,
+                'statusCode' => Response::HTTP_FORBIDDEN,
                 'message' => 'Only doctors may author consultations and prescriptions.',
             ], Response::HTTP_FORBIDDEN);
         }

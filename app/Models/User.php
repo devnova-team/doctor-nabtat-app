@@ -18,11 +18,15 @@ class User extends Authenticatable
         'clinic_id',
         'name',
         'email',
+        'phone',
         'password',
         'role',
         'specialty',
         'must_change_password',
         'is_active',
+        'mfa_secret',
+        'mfa_enabled',
+        'token_version',
         'last_login_at',
         'created_by_user_id',
     ];
@@ -30,6 +34,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'mfa_secret',
     ];
 
     protected function casts(): array
@@ -39,6 +44,9 @@ class User extends Authenticatable
             'password' => 'hashed',
             'must_change_password' => 'boolean',
             'is_active' => 'boolean',
+            'mfa_secret' => 'encrypted',
+            'mfa_enabled' => 'boolean',
+            'token_version' => 'integer',
             'last_login_at' => 'datetime',
         ];
     }
@@ -61,5 +69,20 @@ class User extends Authenticatable
     public function prescriptions(): HasMany
     {
         return $this->hasMany(Prescription::class, 'doctor_id');
+    }
+
+    public function schedules(): HasMany
+    {
+        return $this->hasMany(DoctorSchedule::class, 'doctor_id');
+    }
+
+    public function refreshTokens(): HasMany
+    {
+        return $this->hasMany(RefreshToken::class);
+    }
+
+    public function loginHistories(): HasMany
+    {
+        return $this->hasMany(LoginHistory::class);
     }
 }
